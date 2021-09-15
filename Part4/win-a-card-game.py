@@ -7,8 +7,7 @@ Created on Tue Sep 14 20:00:54 2021
 
 import seaborn as sns
 import numpy as np
-import matplotlib.pyplot as plt
-
+from scipy import stats
 
 def tryUnbust(hand):
     for idx,val in enumerate(hand):
@@ -51,10 +50,6 @@ for _ in range(10_000):
     freq_winners.append(winners.count(15)/(1000-winners.count(0)))
 
 sns.histplot(freq_winners)
-
-likelihoods, bin_edges, _ = plt.hist(freq_winners, bins='auto',
-  edgecolor='black', density=True)
-plt.xlabel('Binned Frequency')
-plt.ylabel('Relative Likelihood')
-plt.show()
+freq_mean, freq_sigma = np.mean(freq_winners), np.std(freq_winners)
+stats.norm.interval(0.95,loc=freq_mean,scale=freq_sigma/np.sqrt(len(freq_winners)))
 
